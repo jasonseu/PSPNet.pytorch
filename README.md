@@ -13,7 +13,7 @@ This repository is a simplified version of official pytorch implement [semseg](h
 
 - Download needed datasets and symlink the paths to them as follows:
 ```bash
-cd PSPNet
+cd PSPNet.pytorch
 mkdir data
 ln -s /path/to/ADEChallengeData2016 data/ADEChallengeData2016
 ln -s /path/to/Cityscapes data/Cityscapes
