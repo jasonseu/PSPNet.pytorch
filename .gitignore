@@ -1,0 +1,8 @@
+.vscode
+*/__pycache__
+data
+initmodel
+logs
+checkpoints
+temp
+results
