@@ -36,6 +36,11 @@ class Tester(object):
         self.data_list = self.test_dataset.data_list
         self.label_map = self.test_dataset.label_map
 
+        self.colors_dir = os.path.join(args.save_dir, 'color')
+        self.gray_dir = os.path.join(args.save_dir, 'gray')
+        check_makedirs(self.colors_dir)
+        check_makedirs(self.gray_dir)
+
     def run(self):
         if not self.args.has_prediction:
             self.infer()
@@ -53,8 +58,6 @@ class Tester(object):
         self.model.load_state_dict(model_dict, strict=True)
         print("=> loaded checkpoint '{}'".format(self.args.ckpt_best_path))
 
-        check_makedirs(self.args.gray_dir)
-        check_makedirs(self.args.color_dir)
         test_loader = DataLoader(self.test_dataset, batch_size=1, shuffle=False, num_workers=self.args.num_workers, pin_memory=True)
         for i, (input, _) in enumerate(tqdm(test_loader)):
             input = np.squeeze(input.numpy(), axis=0)
@@ -78,8 +81,8 @@ class Tester(object):
             color = colorize(gray, self.colors)
             image_path, _ = self.data_list[i]
             image_name = image_path.split('/')[-1].split('.')[0]
-            gray_path = os.path.join(self.args.gray_dir, image_name + '.png')
-            color_path = os.path.join(self.args.color_dir, image_name + '.png')
+            gray_path = os.path.join(self.gray_dir, image_name + '.png')
+            color_path = os.path.join(self.colors_dir, image_name + '.png')
             cv2.imwrite(gray_path, gray)
             color.save(color_path)
 
@@ -143,7 +146,7 @@ class Tester(object):
 
         for i, (image_path, target_path) in enumerate(self.data_list):
             image_name = image_path.split('/')[-1].split('.')[0]
-            pred = cv2.imread(os.path.join(self.args.gray_dir, image_name+'.png'), cv2.IMREAD_GRAYSCALE)
+            pred = cv2.imread(os.path.join(self.gray_dir, image_name+'.png'), cv2.IMREAD_GRAYSCALE)
             target = cv2.imread(target_path, cv2.IMREAD_GRAYSCALE)
             if self.label_map is not None:
                 temp = np.zeros(target.shape)

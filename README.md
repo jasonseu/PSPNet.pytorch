@@ -1,6 +1,6 @@
 # PSPNet
 
-This repository is a simplified version of official pytorch implement [semseg](https://github.com/hszhao/semseg), where multi machines distributed training function is removed and single-machine-multi-gpu training is maintained. Training on ADE20K, PSAVAL VOC 2012 and Cityscapes is supported.
+This repository is a simplified version of official pytorch implement [semseg](https://github.com/hszhao/semseg), where multi machines distributed training function is removed and single-machine-multi-gpu training is maintained. Training on ADE20K, PASCAL VOC 2012 and Cityscapes is supported.
 
 ## Usage
 
@@ -55,7 +55,7 @@ Note that use flag `-r` for resuming training. Pretrained models are provided on
 
 | metrics  |  mIOU  |  mAcc  |  aAcc  |
 | -------- | ------ | ------ | ------ |
-| personal | 0.7188 | 0.8035 | 0.9597 |
+| personal | 0.7907 | 0.8632 | 0.9615 |
 | official | 0.7863 | 0.8577 | 0.9614 |
 
 ## Acknowledgement
