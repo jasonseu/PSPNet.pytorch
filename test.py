@@ -34,7 +34,6 @@ class Tester(object):
 
         self.colors = np.loadtxt(args.colors_path).astype('uint8')
         self.data_list = self.test_dataset.data_list
-        self.label_map = self.test_dataset.label_map
 
         self.colors_dir = os.path.join(args.save_dir, 'color')
         self.gray_dir = os.path.join(args.save_dir, 'gray')
@@ -148,13 +147,17 @@ class Tester(object):
             image_name = image_path.split('/')[-1].split('.')[0]
             pred = cv2.imread(os.path.join(self.gray_dir, image_name+'.png'), cv2.IMREAD_GRAYSCALE)
             target = cv2.imread(target_path, cv2.IMREAD_GRAYSCALE)
-            if self.label_map is not None:
+            if self.args.label_op == 'mapping':
+                label_map = self.test_dataset.label_map
                 temp = np.zeros(target.shape)
-                for k, v in self.label_map.items():
+                for k, v in label_map.items():
                     t = target == k
                     target[t] = v
                     temp = np.logical_or(temp, t)
                 target[~temp] = 255
+            elif self.args.label_op == 'shift':
+                t = ~(target == self.args.ignore_label)
+                target[t] = target[t] - 1
             intersection, union, target = intersectionAndUnion(pred, target, self.args.num_classes)
             intersection_meter.update(intersection)
             union_meter.update(union)

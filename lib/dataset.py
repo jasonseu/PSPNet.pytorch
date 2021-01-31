@@ -14,32 +14,26 @@ from torch.utils.data import Dataset
 
 def make_dataset(split='train', data_path=None):
     assert split in ['train', 'val', 'test']
-    image_label_list = []
+    data = []
     list_read = open(data_path).readlines()
     print("Totally {} samples in {} set.".format(len(list_read), split))
     for line in list_read:
-        line = line.strip()
-        line_split = line.split(' ')
+        temp = line.strip().split(' ')
         if split == 'test':
-            image_path = line_split[0]
-            label_path = image_path  # just set place holder for label_path, not for use
+            image_path = temp[0]
+            label_path = None
         else:
-            if len(line_split) != 2:
-                raise (RuntimeError("Image list file read line error : " + line + "\n"))
-            image_path = line_split[0]
-            label_path = line_split[1]
-        item = (image_path, label_path)
-        image_label_list.append(item)
-    return image_label_list
+            image_path, label_path = temp
+        data.append((image_path, label_path))
+    return data
 
 
 class SegmentationDataset(Dataset):
-    def __init__(self, args, split='train', data_path=None, transform=None, ignore_label=255):
+    def __init__(self, args, split='train', data_path=None, transform=None):
         self.args = args
         self.split = split
         self.transform = transform
         self.data_list = make_dataset(split, data_path)
-        self.ignore_index = args.ignore_label
         if args.label_op == 'mapping':
             self.label_map = {c:i for i, c in enumerate(args.label_list)}
 
@@ -61,10 +55,9 @@ class SegmentationDataset(Dataset):
                 temp = np.logical_or(temp, t)
             label[~temp] = 255
         elif self.args.label_op == 'shift':
-            label = label - 1
+            t = ~(label == self.args.ignore_label)
+            label[t] = label[t] - 1
         
-        if image.shape[0] != label.shape[0] or image.shape[1] != label.shape[1]:
-            raise (RuntimeError("Image & label shape mismatch: " + image_path + " " + label_path + "\n"))
         if self.transform is not None:
             image, label = self.transform(image, label)
         

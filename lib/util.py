@@ -184,14 +184,14 @@ def colorize(gray, palette):
     color.putpalette(palette)
     return color
 
-def adaptive_state_dict(state_dict, distributed=False):
+def adaptive_state_dict(state_dict, is_distributed):
     key0 = next(iter(state_dict))
     temp = OrderedDict()
-    if distributed and not key0.startswith('module'):
+    if is_distributed and not key0.startswith('module'):
         for k, v in state_dict.items():
             k = 'module.{}'.format(k)
             temp[k] = v
-    elif not distributed and key0.startswith('module'):
+    elif not is_distributed and key0.startswith('module'):
         for k, v in state_dict.items():
             k = k[7:]
             temp[k] = v
@@ -200,7 +200,7 @@ def adaptive_state_dict(state_dict, distributed=False):
 
     return temp
 
-def load_checkpoint(args):
+def load_checkpoint(args, is_distributed=False):
     checkpoint = torch.load(args.ckpt_latest_path)
     if isinstance(checkpoint, dict):
         s_epoch = checkpoint['epoch']
@@ -208,5 +208,5 @@ def load_checkpoint(args):
         best_score = checkpoint['best_score']
         optim_dict = checkpoint['optim_dict']
         model_dict = checkpoint['model_dict']
-        model_dict = adaptive_state_dict(model_dict, args.distributed)
+        model_dict = adaptive_state_dict(model_dict, is_distributed)
         return s_epoch, global_step, best_score, optim_dict, model_dict

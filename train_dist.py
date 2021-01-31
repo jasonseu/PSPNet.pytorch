@@ -96,9 +96,12 @@ class Trainer(object):
         s_epoch, best_score = 0, 0.0
         if self.args.resume:
             print("=> loading checkpoint '{}'".format(self.args.ckpt_latest_path))
-            s_epoch, global_step, best_score, model_dict = load_checkpoint(self.args)
+            s_epoch, global_step, best_score, optim_dict, model_dict = load_checkpoint(self.args, is_distributed=True)
             self.global_step = global_step
+            self.optimizer.load_state_dict(optim_dict)
             self.model.load_state_dict(model_dict, strict=True)
+            del optim_dict
+            del model_dict
             print("=> loaded checkpoint '{}'".format(self.args.ckpt_latest_path))
         for epoch in range(s_epoch, self.args.max_epochs):
             self.train(epoch)
