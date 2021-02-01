@@ -33,7 +33,7 @@ class Tester(object):
         self.test_dataset = SegmentationDataset(args, split='val', data_path=args.test_path, transform=test_transform)
 
         self.colors = np.loadtxt(args.colors_path).astype('uint8')
-        self.data_list = self.test_dataset.data_list
+        self.data = self.test_dataset.data
 
         self.colors_dir = os.path.join(args.save_dir, 'color')
         self.gray_dir = os.path.join(args.save_dir, 'gray')
@@ -78,7 +78,7 @@ class Tester(object):
 
             gray = np.uint8(prediction)
             color = colorize(gray, self.colors)
-            image_path, _ = self.data_list[i]
+            image_path, _ = self.data[i]
             image_name = image_path.split('/')[-1].split('.')[0]
             gray_path = os.path.join(self.gray_dir, image_name + '.png')
             color_path = os.path.join(self.colors_dir, image_name + '.png')
@@ -143,7 +143,7 @@ class Tester(object):
         union_meter = AverageMeter()
         target_meter = AverageMeter()
 
-        for i, (image_path, target_path) in enumerate(self.data_list):
+        for i, (image_path, target_path) in enumerate(self.data):
             image_name = image_path.split('/')[-1].split('.')[0]
             pred = cv2.imread(os.path.join(self.gray_dir, image_name+'.png'), cv2.IMREAD_GRAYSCALE)
             target = cv2.imread(target_path, cv2.IMREAD_GRAYSCALE)
@@ -163,7 +163,7 @@ class Tester(object):
             union_meter.update(union)
             target_meter.update(target)
             accuracy = sum(intersection) / (sum(target) + 1e-10)
-            print(f'Evaluating {i+1}/{len(self.data_list)} on image {image_name}.png, accuracy {accuracy:.4f}.')
+            print(f'Evaluating {i+1}/{len(self.data)} on image {image_name}.png, accuracy {accuracy:.4f}.')
         
         iou_class = intersection_meter.sum / (union_meter.sum + 1e-10)
         accuracy_class = intersection_meter.sum / (target_meter.sum + 1e-10)
