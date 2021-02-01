@@ -154,7 +154,7 @@ class Tester(object):
                     t = target == k
                     target[t] = v
                     temp = np.logical_or(temp, t)
-                target[~temp] = 255
+                target[~temp] = self.args.ignore_label
             elif self.args.label_op == 'shift':
                 t = ~(target == self.args.ignore_label)
                 target[t] = target[t] - 1

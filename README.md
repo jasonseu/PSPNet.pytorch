@@ -41,7 +41,7 @@ Note that use flag `-r` for resuming training. Pretrained models are provided on
 
 | metrics  |  mIOU  |  mAcc  |  aAcc  |
 | -------- | ------ | ------ | ------ |
-| personal | 0.7801 | 0.8561 | 0.9498 |
+| personal | 0.7938 | 0.8784 | 0.9539 |
 | official | 0.7907 | 0.8636 | 0.9534 |
 
 - **ADE20K**: train on ade challenge 2016 **train** (20210 images) set and test on **val** (2000 images) set.
