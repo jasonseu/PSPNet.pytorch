@@ -35,6 +35,12 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 python train_dist.py --config configs/cityscapes_ps
 ```
 Note that use flag `-r` for resuming training. Pretrained models are provided on [google drive](https://drive.google.com/drive/folders/1EnMH50ZkGHbw9acXdwNp5-IhQ6OKOhaA?usp=sharing). Besides, one can use official pretrained models to initialize the network and reproduce official provided results. Official provided pretrained models can be visited [here](https://drive.google.com/drive/folders/15wx9vOM0euyizq-M1uINgN0_wjVRf9J3).
 
+### 3. Test
+Evaluate model on validation set in full image resolution:
+```bash
+python test.py --config/cityscapes_pspnet101.yaml
+```
+
 ## Performance
 
 - **PASCAL VOC 2012**: train on **train_aug** (10582 images) set and test on **val** (1449 images) set.
