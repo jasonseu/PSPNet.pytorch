@@ -54,7 +54,7 @@ python test.py --config/cityscapes_pspnet101.yaml
 
 | metrics  |  mIOU  |  mAcc  |  aAcc  |
 | -------- | ------ | ------ | ------ |
-| personal | 0.4304 | 0.5378 | 0.7989 |
+| personal | 0.4344 | 0.5404 | 0.8114 |
 | official | 0.4310 | 0.5375 | 0.8107 |
 
 - **Cityscapes**: train on **fine_train** (2975 images) set and test on **fine_val** (500 images) set.
