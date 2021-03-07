@@ -20,7 +20,7 @@ ln -s /path/to/Cityscapes data/Cityscapes
 ln -s /path/to/VOC2012 data/VOC2012
 ```
 
-- Run the corresponding scipts under the fold `scripts` to generate required intermediate data.
+- Run the corresponding scripts under the fold `scripts` to generate required intermediate data.
 
 - Download [pretrained models](https://drive.google.com/drive/folders/15wx9vOM0euyizq-M1uINgN0_wjVRf9J3) on ImageNet and put them under the fold `initmodel` for weights initialization.
 
@@ -33,7 +33,7 @@ CUDA_VISIBLE_DEVICES=0 python train.py --config configs/cityscapes_pspnet101.yam
 ```bash
 CUDA_VISIBLE_DEVICES=0,1,2,3 python train_dist.py --config configs/cityscapes_pspnet101.yaml
 ```
-Note that use flag `-r` for resuming training. Pretrained models are provided on [google drive](https://drive.google.com/drive/folders/1EnMH50ZkGHbw9acXdwNp5-IhQ6OKOhaA?usp=sharing). Besides, one can use official pretrained models to initialize the network and reproduce official provided results. Official provided pretrained models can be visited [here](https://drive.google.com/drive/folders/15wx9vOM0euyizq-M1uINgN0_wjVRf9J3).
+Note that use flag `-r` for resuming training. Well-trained models are provided on [google drive](https://drive.google.com/drive/folders/1EnMH50ZkGHbw9acXdwNp5-IhQ6OKOhaA?usp=sharing). Besides, one can use official pretrained models to initialize the network and reproduce official provided results. Official provided pretrained models can be visited [here](https://drive.google.com/drive/folders/15wx9vOM0euyizq-M1uINgN0_wjVRf9J3).
 
 ### 3. Test
 Evaluate model on validation set in full image resolution:
