@@ -153,7 +153,7 @@ class Trainer(object):
             batch_size = input.size(0)
             main_loss, aux_loss, loss = [l * batch_size for l in [main_loss, aux_loss, loss]]
             count = target.new_tensor([batch_size], dtype=torch.long)
-            dist.all_reduce(main_loss), dist.all_reduce(aux_loss), dist.all_reduce(loss)
+            dist.all_reduce(main_loss), dist.all_reduce(aux_loss), dist.all_reduce(loss), dist.all_reduce(count)
             main_loss, aux_loss, loss = main_loss / count.item(), aux_loss / count.item(), loss / count.item()
 
             output = torch.argmax(output, dim=1)
